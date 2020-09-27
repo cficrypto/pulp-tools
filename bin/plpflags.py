@@ -538,6 +538,9 @@ class Pulp_rt2(object):
         if self.config.get('cluster/nb_pe') is not None:
             flags.add_define(['ARCHI_NB_PE', self.config.get('cluster/nb_pe')])
 
+        flags.add_c_flag('-flto')
+        flags.add_c_flag('-fno-builtin')
+
     def set_ld_flags(self, flags):
 
         if self.config.get_config('rt/bsp'):
@@ -562,6 +565,8 @@ class Pulp_rt2(object):
         flags.add_lib('gcc')
         flags.add_option('-nostartfiles')
         flags.add_option('-nostdlib')
+        flags.add_option('-flto')
+        flags.add_option('-fno-builtin')
         flags.add_option('-Wl,--gc-sections')
 
 class Runtime(object):
@@ -848,7 +853,7 @@ class Toolchain(object):
           self.pulp_objdump = 'bin/riscv%d-unknown-elf-objdump' % size
           self.pulp_prefix = 'bin/riscv%d-unknown-elf-' % size
           self.pulp_cc = 'bin/riscv%d-unknown-elf-gcc ' % size
-          self.pulp_ar = 'bin/riscv%d-unknown-elf-ar' % size
+          self.pulp_ar = 'bin/riscv%d-unknown-elf-gcc-ar' % size
 
       self.user_toolchain = 'PULP_RISCV_%s_TOOLCHAIN' % (self.compiler.upper())
 
