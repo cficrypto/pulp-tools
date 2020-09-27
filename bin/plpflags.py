@@ -134,7 +134,7 @@ PULP_LIB_TARGET_NAME_{lib_name} ?= lib$(PULP_LIB_NAME_{lib_name}).a
 $(CONFIG_BUILD_DIR)/lib$(PULP_LIB_NAME_{lib_name}).a: $({lib_name}_OBJS)  $(PULP_SDK_INSTALL)/rules/tools.mk
 	@mkdir -p `dirname $@`
 	@rm -f $@
-	$(PULP_AR) -r $@ $^
+	$(PULP_AR) rs $@ $({lib_name}_OBJS)
 
 $(PULP_SDK_INSTALL)/lib/{install_name}/$(PULP_LIB_TARGET_NAME_{lib_name}): $(CONFIG_BUILD_DIR)/lib$(PULP_LIB_NAME_{lib_name}).a
 	@mkdir -p `dirname $@`
