@@ -184,10 +184,11 @@ class Padframe(object):
               file.write('};\n')
               file.write('\n')
 
-          file.write('rt_padframe_profile_t __rt_padframe_profiles[] = {\n')
+          file.write('static rt_padframe_profile_t ___rt_padframe_profiles[] = {\n')
           for profile in profile_list:
             file.write('  { .name="%s", .config=__rt_padframe_%s },\n' % (profile.name, profile.name))
           file.write('};\n')
+          file.write('rt_padframe_profile_t *__rt_padframe_profiles = ___rt_padframe_profiles;\n')
           file.write('\n')
 
           file.write('int __rt_nb_profile = %d;\n' % len(profile_list))

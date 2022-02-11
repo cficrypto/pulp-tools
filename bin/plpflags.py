@@ -377,7 +377,7 @@ class Pulp_rt2(object):
             file.write('unsigned int __rt_platform = %d;\n' % platform)
             file.write('\n')
 
-            file.write('rt_dev_t __rt_devices[] = {\n')
+            file.write('static rt_dev_t ___rt_devices[] = {\n')
 
             #board = self.config.get_config('board')
             #devices = board.get_config('devices')
@@ -501,6 +501,7 @@ class Pulp_rt2(object):
 
             file.write('};\n')
 
+            file.write('rt_dev_t *__rt_devices = ___rt_devices;\n')
             file.write('\n')
             
             file.write('int __rt_nb_devices = %d;\n' % nb_devices)
