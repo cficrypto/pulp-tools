@@ -610,7 +610,7 @@ class Runtime(object):
     flags.add_define(['PULP', None])
     flags.add_define(['__PULP__', None])
 
-    flags.add_c_flag('-fdata-sections -ffunction-sections')
+    flags.add_c_flag('-fdata-sections -ffunction-sections -ffreestanding')
 
   def set_ld_flags(self, flags):
     if self.rt != None:
@@ -844,17 +844,17 @@ class Toolchain(object):
         size = 32
 
       if compiler == 'llvm':
-          self.pulp_ld = 'bin/riscv%d-unknown-elf-gcc' % size
-          self.pulp_objdump = 'bin/riscv%d-unknown-elf-objdump' % size
-          self.pulp_prefix = 'bin/riscv%d-unknown-elf-' % size
-          self.pulp_cc = 'bin/clang -target riscv32-unknown-elf -I%s/riscv32-unknown-elf/include -D__LLVM__ -D__have_long64=0 -D_XOPEN_SOURCE=0' % os.environ.get('PULP_RISCV_GCC_TOOLCHAIN_CI')
-          self.pulp_ar = 'bin/riscv%d-unknown-elf-ar' % size
+          self.pulp_ld = 'bin/riscv%d-corev-elf-gcc' % size
+          self.pulp_objdump = 'bin/riscv%d-corev-elf-objdump' % size
+          self.pulp_prefix = 'bin/riscv%d-corev-elf-' % size
+          self.pulp_cc = 'bin/clang -target riscv32-unknown-elf -I%s/riscv32-corev-elf/include -D__LLVM__ -D__have_long64=0 -D_XOPEN_SOURCE=0' % os.environ.get('PULP_RISCV_GCC_TOOLCHAIN_CI')
+          self.pulp_ar = 'bin/riscv%d-corev-elf-ar' % size
       else:
-          self.pulp_ld = 'bin/riscv%d-unknown-elf-gcc' % size
-          self.pulp_objdump = 'bin/riscv%d-unknown-elf-objdump' % size
-          self.pulp_prefix = 'bin/riscv%d-unknown-elf-' % size
-          self.pulp_cc = 'bin/riscv%d-unknown-elf-gcc ' % size
-          self.pulp_ar = 'bin/riscv%d-unknown-elf-gcc-ar' % size
+          self.pulp_ld = 'bin/riscv%d-corev-elf-gcc' % size
+          self.pulp_objdump = 'bin/riscv%d-corev-elf-objdump' % size
+          self.pulp_prefix = 'bin/riscv%d-corev-elf-' % size
+          self.pulp_cc = 'bin/riscv%d-corev-elf-gcc ' % size
+          self.pulp_ar = 'bin/riscv%d-corev-elf-gcc-ar' % size
 
       self.user_toolchain = 'PULP_RISCV_%s_TOOLCHAIN' % (self.compiler.upper())
 
