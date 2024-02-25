@@ -691,41 +691,44 @@ class Arch(object):
     objd_flags = None
     c_flags = ''
     ext_name = ''
-    isa = 'I'
 
     self.compiler = config.get('compiler')
     if self.compiler is None:
         self.compiler = 'gcc'
 
-    isa = core_config.get('march')
-
-    if self.chip_family == 'gap':
-      c_flags = ' -mPE=8 -mFC=1'
-      ld_flags = ' -mPE=8 -mFC=1'
-      isa='imcXgap8'
-    elif self.chip in ['vega', 'gap9', 'pulp']:
-      c_flags = ' -mPE=8 -mFC=1'
-      ld_flags = ' -mPE=8 -mFC=1'
-      isa='imcXgap9'
-    elif self.chip.find('oprecomp') != -1:
-      isa='imcXgap9'
-    elif core_config.get('version') == 'zeroriscy':   
-      c_flags += ' -DRV_ISA_RV32=1'
-    elif core_config.get('version') == 'microriscy':          
-      c_flags += ' -DRV_ISA_RV32=1'
-    elif core_config.get('version').find('ri5cyv2') != -1:
-      pass
-    elif core_config.get('version').find('ri5cyv1') != -1: 
-      pass
-    elif core_config.get('version').find('ri5cy') != -1: 
-      # Bit operations are removed on honey as the compiler assumes the new
-      # semantic for p.fl1
-      ext_name = 'Xpulpv0 -mnobitop'
-      isa = 'IM'
+    isa = os.environ['RISCV32_MARCH']
+    if isa:
+        isa = isa[4:]
     else:
-      isa = core_config.get('isa')
+        isa = core_config.get('march')
 
-      if self.has_fpu and core_config.get('march') is None:  isa += 'F'
+        if self.chip_family == 'gap':
+          c_flags = ' -mPE=8 -mFC=1'
+          ld_flags = ' -mPE=8 -mFC=1'
+          isa='imcXgap8'
+        elif self.chip in ['vega', 'gap9', 'pulp']:
+          c_flags = ' -mPE=8 -mFC=1'
+          ld_flags = ' -mPE=8 -mFC=1'
+          isa='imcXgap9'
+        elif self.chip.find('oprecomp') != -1:
+          isa='imcXgap9'
+        elif core_config.get('version') == 'zeroriscy':
+          c_flags += ' -DRV_ISA_RV32=1'
+        elif core_config.get('version') == 'microriscy':
+          c_flags += ' -DRV_ISA_RV32=1'
+        elif core_config.get('version').find('ri5cyv2') != -1:
+          pass
+        elif core_config.get('version').find('ri5cyv1') != -1:
+          pass
+        elif core_config.get('version').find('ri5cy') != -1:
+          # Bit operations are removed on honey as the compiler assumes the new
+          # semantic for p.fl1
+          ext_name = 'Xpulpv0 -mnobitop'
+          isa = 'IM'
+        else:
+          isa = core_config.get('isa')
+
+          if self.has_fpu and core_config.get('march') is None:  isa += 'F'
 
     toolchain_version = get_toolchain_version(core_config)
 
